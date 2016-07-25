@@ -1,5 +1,6 @@
 package us.bojie.musicmachine;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -25,10 +26,16 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Notification.Builder nB = new Notification.Builder(this);
+        nB.setSmallIcon(R.mipmap.ic_launcher);
+        Notification notification = nB.build();
+        startForeground(11, notification);
+
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 stopSelf();
+                stopForeground(true);
             }
         });
         return Service.START_NOT_STICKY;
