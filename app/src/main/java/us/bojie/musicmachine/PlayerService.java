@@ -15,7 +15,7 @@ public class PlayerService extends Service {
 
     private static final String TAG = PlayerService.class.getSimpleName();
     private MediaPlayer mPlayer;
-    private Messenger mMessenger = new Messenger(new PlayerHandler(this));
+    public Messenger mMessenger = new Messenger(new PlayerHandler(this));
 
     @Override
     public void onCreate() {
