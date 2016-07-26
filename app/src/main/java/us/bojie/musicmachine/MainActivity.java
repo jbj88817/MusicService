@@ -10,9 +10,14 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import us.bojie.musicmachine.adapters.PlaylistAdapter;
+import us.bojie.musicmachine.models.Song;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mPlayButton;
     private Messenger mServiceMessenger;
     private Messenger mActivityMessenger = new Messenger(new ActivityHandler(this));
+    private PlaylistAdapter mAdapter;
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -51,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDownloadButton = (Button) findViewById(R.id.download_button);
-        mPlayButton = (Button) findViewById(R.id.play_button);
+        mDownloadButton = (Button) findViewById(R.id.downloadButton);
+        mPlayButton = (Button) findViewById(R.id.playButton);
 
         mDownloadButton.setOnClickListener(new View.OnClickListener() {
 
@@ -62,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 // Send message to handler for processing
-                for (String song : Playlist.songs) {
+                for (Song song : Playlist.songs) {
                     Intent intent = new Intent(MainActivity.this, DownloadIntentService.class);
                     intent.putExtra(KEY_SONG, song);
                     startService(intent);
@@ -87,6 +93,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        mAdapter = new PlaylistAdapter(this, Playlist.songs);
+        recyclerView.setAdapter(mAdapter);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
 
     }
 
