@@ -64,15 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Downloading", Toast.LENGTH_SHORT).show();
-
-
-                // Send message to handler for processing
-                for (Song song : Playlist.songs) {
-                    Intent intent = new Intent(MainActivity.this, DownloadIntentService.class);
-                    intent.putExtra(KEY_SONG, song);
-                    startService(intent);
-                }
+                //downloadSongs();
+                testIntents();
             }
         });
 
@@ -103,6 +96,23 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
 
+    }
+
+    private void testIntents() {
+        // Explicit intent
+        Intent intent = new Intent(this, DetailActivity.class);
+        startActivity(intent);
+    }
+
+    private void downloadSongs() {
+        Toast.makeText(MainActivity.this, "Downloading", Toast.LENGTH_SHORT).show();
+
+        // Send message to handler for processing
+        for (Song song : Playlist.songs) {
+            Intent intent = new Intent(MainActivity.this, DownloadIntentService.class);
+            intent.putExtra(KEY_SONG, song);
+            startService(intent);
+        }
     }
 
     public void changePlayButtonText(String text) {
