@@ -35,7 +35,7 @@ public class DetailActivity extends AppCompatActivity{
 //            }
 //        }
 
-        if (intent.getParcelableArrayExtra(MainActivity.EXTRA_SONG) != null) {
+        if (intent.getParcelableExtra(MainActivity.EXTRA_SONG) != null) {
             Song song = intent.getParcelableExtra(MainActivity.EXTRA_SONG);
             if (titleLabel != null) {
                 titleLabel.setText(song.getTitle());
