@@ -4,17 +4,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import us.bojie.musicmachine.adapters.PlaylistAdapter;
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mDownloadButton;
     private Button mPlayButton;
     private Messenger mServiceMessenger;
+    private RelativeLayout mRootLayout;
     private Messenger mActivityMessenger = new Messenger(new ActivityHandler(this));
     private PlaylistAdapter mAdapter;
     private ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDownloadButton = (Button) findViewById(R.id.downloadButton);
         mPlayButton = (Button) findViewById(R.id.playButton);
+        mRootLayout = (RelativeLayout) findViewById(R.id.rootLayout);
 
         mDownloadButton.setOnClickListener(new View.OnClickListener() {
 
@@ -105,9 +110,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void testIntents() {
         // Explicit intent
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        intent.putExtra(EXTRA_TITLE, "HAHAHA");
-        startActivityForResult(intent, REQUEST_FAVORITE);
+//        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+//        intent.putExtra(EXTRA_TITLE, "HAHAHA");
+//        startActivityForResult(intent, REQUEST_FAVORITE);
+
+        // Implicit intent
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri geoLocation = Uri.parse("geo:0,0?q=37.4199948,-122.0752164(Google)");
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        } else {
+            Snackbar.make(mRootLayout,"Sorry, nothing found to handle this request",
+                    Snackbar.LENGTH_LONG).show();
+        }
+
     }
 
     private void downloadSongs() {
