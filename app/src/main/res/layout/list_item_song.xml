@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         tools:text="Sample Title"
-        android:id="@+id/songTitleLabel"
+        android:id="@+id/ItemSongTitleLabel"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"

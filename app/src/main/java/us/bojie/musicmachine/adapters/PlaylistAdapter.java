@@ -50,7 +50,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.SongVi
 
         public SongViewHolder(View itemView) {
             super(itemView);
-            mTitleLabel = (TextView) itemView.findViewById(R.id.songTitleLabel);
+            mTitleLabel = (TextView) itemView.findViewById(R.id.ItemSongTitleLabel);
             mFavIcon = (ImageView) itemView.findViewById(R.id.favIcon);
             itemView.setOnClickListener(this);
         }
