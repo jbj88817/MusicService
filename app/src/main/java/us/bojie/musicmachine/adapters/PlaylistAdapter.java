@@ -1,6 +1,8 @@
 package us.bojie.musicmachine.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import us.bojie.musicmachine.DetailActivity;
+import us.bojie.musicmachine.MainActivity;
 import us.bojie.musicmachine.R;
 import us.bojie.musicmachine.models.Song;
 
@@ -67,7 +71,10 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.SongVi
 
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(mContext, DetailActivity.class);
+            intent.putExtra(MainActivity.EXTRA_SONG, mSongs[getAdapterPosition()]);
+            intent.putExtra(MainActivity.EXTRA_LIST_POSITION, getAdapterPosition());
+            ((Activity) mContext).startActivityForResult(intent, MainActivity.REQUEST_FAVORITE);
         }
     }
 }
