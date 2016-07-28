@@ -22,6 +22,8 @@ public class DetailActivity extends AppCompatActivity {
     private Song mSong;
     private RelativeLayout mRootLayout;
 
+    public static final String SHARE_SONG = "us.bojie.intent.action.SHARE_SONG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if (intent.getAction().equals(Intent.ACTION_SEND)) {
+        if (Intent.ACTION_SEND.equals(intent.getAction())) {
             handleSendIntent(intent);
         } else {
             //        if (intent.getStringExtra(MainActivity.EXTRA_TITLE) != null) {
@@ -44,11 +46,11 @@ public class DetailActivity extends AppCompatActivity {
 //        }
 
             if (intent.getParcelableExtra(MainActivity.EXTRA_SONG) != null) {
-                Song song = intent.getParcelableExtra(MainActivity.EXTRA_SONG);
+                mSong = intent.getParcelableExtra(MainActivity.EXTRA_SONG);
                 if (titleLabel != null) {
-                    titleLabel.setText(song.getTitle());
+                    titleLabel.setText(mSong.getTitle());
                 }
-                favoriteCheckbox.setChecked(song.isFavorite());
+                favoriteCheckbox.setChecked(mSong.isFavorite());
             }
 
             final int listPosition = intent.getIntExtra(MainActivity.EXTRA_LIST_POSITION, 0);
@@ -87,6 +89,15 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
+
+        if (itemId == R.id.action_share) {
+            if (mSong != null) {
+                Intent customIntent = new Intent(SHARE_SONG);
+                customIntent.putExtra(MainActivity.EXTRA_SONG, mSong);
+                Intent chooser = Intent.createChooser(customIntent, "Share song");
+                startActivity(chooser);
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
