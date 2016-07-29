@@ -1,28 +1,48 @@
 package us.bojie.musicmachine;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import us.bojie.musicmachine.models.Song;
 
 /**
  * Created by bjiang on 7/21/16.
  */
-public class DownloadIntentService extends IntentService{
+public class DownloadIntentService extends IntentService {
+
 
     private static final String TAG = DownloadIntentService.class.getSimpleName();
+
+    private NotificationManager mNotificationManager;
+    private static final int NOTIFICATION_ID = 22;
 
     public DownloadIntentService() {
         super("DownloadIntentService");
         setIntentRedelivery(true);
     }
+
     @Override
     protected void onHandleIntent(Intent intent) {
-        String song = intent.getStringExtra(MainActivity.EXTRA_SONG);
-        downloadSong(song);
+        Song song = intent.getParcelableExtra(MainActivity.EXTRA_SONG);
+        Notification.Builder builder = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_queue_music_white)
+                .setContentTitle("Downloading")
+                .setContentText(song.getTitle())
+                .setProgress(0, 0, true);
+
+        mNotificationManager = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
+
+        downloadSong(song.getTitle());
     }
 
     private void downloadSong(String song) {
-        long endTime = System.currentTimeMillis() + 5*1000;
+        long endTime = System.currentTimeMillis() + 2 * 1000;
         while (System.currentTimeMillis() < endTime) {
             try {
                 Thread.sleep(1000);
@@ -31,5 +51,7 @@ public class DownloadIntentService extends IntentService{
             }
         }
         Log.d(TAG, song + " downloaded!");
+
+        mNotificationManager.cancel(NOTIFICATION_ID);
     }
 }

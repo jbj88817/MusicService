@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                //downloadSongs();
-                testIntents();
+                downloadSongs();
+//              testIntents();
             }
         });
 
