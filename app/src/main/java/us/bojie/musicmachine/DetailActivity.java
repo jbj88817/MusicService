@@ -94,8 +94,9 @@ public class DetailActivity extends AppCompatActivity {
             if (mSong != null) {
                 Intent customIntent = new Intent(SHARE_SONG);
                 customIntent.putExtra(MainActivity.EXTRA_SONG, mSong);
-                Intent chooser = Intent.createChooser(customIntent, "Share song");
-                startActivity(chooser);
+//                Intent chooser = Intent.createChooser(customIntent, "Share song");
+//                startActivity(chooser);
+                sendBroadcast(customIntent);
             }
         }
 
