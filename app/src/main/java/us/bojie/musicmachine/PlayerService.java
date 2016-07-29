@@ -9,6 +9,8 @@ import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import us.bojie.musicmachine.models.Song;
+
 /**
  * Created by bojiejiang on 7/21/16.
  */
@@ -26,8 +28,19 @@ public class PlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Notification.Builder nB = new Notification.Builder(this);
-        nB.setSmallIcon(R.mipmap.ic_launcher);
+
+        String title = "";
+        String artist = "";
+
+        if (intent.getParcelableExtra(MainActivity.EXTRA_SONG) != null) {
+            Song song = intent.getParcelableExtra(MainActivity.EXTRA_SONG);
+            title = song.getTitle();
+            artist = song.getArtist();
+        }
+        Notification.Builder nB = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_queue_music_white)
+                .setContentTitle(title)
+                .setContentText(artist);
         Notification notification = nB.build();
         startForeground(11, notification);
 
@@ -65,6 +78,7 @@ public class PlayerService extends Service {
     public boolean isPlaying() {
         return mPlayer.isPlaying();
     }
+
     public void play() {
         mPlayer.start();
     }
